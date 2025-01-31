@@ -14,11 +14,9 @@ def get_html(url):
 def download_image(memName, src_link, savedir):
     if not os.path.isdir(savedir):
         os.makedirs(savedir)
-
-    filename = os.path.join(savedir, memName + '.jpg')
+    filename = os.path.join(savedir, memNum + "." + memName + '.jpg')
     src_link = re.sub(r'/\d+_\d+_\d+\.jpg$', '.jpg', src_link)
     tmp = requests.get("https://sakurazaka46.com/" + src_link)
-
     with open(filename, 'wb') as f:
         f.write(tmp.content)
 
@@ -31,17 +29,13 @@ def process_member(memNum):
     memPic_src = res.find(class_="ph").find('img')['src']
     memCard_src = res.find(class_="part-card").find('img')['src']
     PHOTO = res.find(class_="part-cimg")
-
     download_image(memName, memPic_src, "Pic")
     download_image(memName, memCard_src, "GreetingCard")
-
     if PHOTO:
         photo_src = PHOTO.find('img')['src']
         download_image(memName, photo_src, "GreetingPHOTO")
-
     print(memName)
 
-memList = ["03", "06", "08", "43", "53", "54", "55", "56", "45", "46", "47", "57", "48", "50", "58", "51", "59", "60", "61", "62", "63", "64", "65", "66", "67", "68", "69"]
-
+memList = ["06","43", "53", "54", "55", "56", "45", "46", "47", "57", "48", "50", "58", "51", "59", "60", "61", "62", "63", "64", "65", "66", "67", "68", "69"]
 for memNum in memList:
     process_member(memNum)
